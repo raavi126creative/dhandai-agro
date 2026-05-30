@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhandai Agro Service | Seeds, Fertilizers & Farming Supplies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-color: #F5F3E7; --bg-light: #EDEBE0; --text-main: #2C3E28; --primary-green: #1E4620; --secondary-green: #2B5A2E; --accent-gold: #B8860B; --accent-terra: #8B4513; --cream: #FAF8F0; --white: #FFFFFF; --font-heading: 'Playfair Display', serif; --font-body: 'Lato', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: var(--font-body); line-height: 1.8; }
+        h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 400; color: var(--primary-green); }
+        a { text-decoration: none; }
+        .btn { display: inline-block; padding: 16px 36px; border: 2px solid var(--primary-green); color: var(--primary-green); text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; transition: all 0.4s ease; background: transparent; cursor: pointer; font-weight: 600; }
+        .btn:hover { background: var(--primary-green); color: var(--cream); }
+        header { padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(245, 243, 231, 0.98); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(30, 70, 32, 0.15); }
+        .logo { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--primary-green); }
+        nav ul { display: flex; gap: 2rem; list-style: none; }
+        nav a { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-main); font-weight: 500; text-decoration: none; }
+        .hero { height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 5%; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070'); background-size: cover; background-position: center; }
+        .hero-content { color: var(--white); max-width: 850px; }
+        .hero-content h1 { font-size: 3.5rem; color: var(--white); margin-bottom: 1.2rem; }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 2.5rem; opacity: 0.95; }
+        .hero .btn { border-color: var(--white); color: var(--white); }
+        .hero .btn:hover { background: var(--white); color: var(--primary-green); }
+        .about-banner { background: linear-gradient(rgba(30, 70, 32, 0.92), rgba(30, 70, 32, 0.92)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80'); background-size: cover; padding: 5rem 5%; text-align: center; color: var(--cream); }
+        .about-banner h2 { color: var(--cream); font-size: 2.5rem; margin-bottom: 1rem; }
+        .about-banner p { max-width: 750px; margin: 0 auto 1.5rem auto; opacity: 0.9; }
+        .section { padding: 5rem 5%; }
+        .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 0.5rem; }
+        .section-subtitle { text-align: center; text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem; color: var(--accent-terra); margin-bottom: 4rem; display: block; font-weight: 600; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .product-card { background: var(--white); border-radius: 15px; overflow: hidden; transition: all 0.4s ease; box-shadow: 0 5px 25px rgba(0,0,0,0.08); }
+        .product-card:hover { transform: translateY(-12px); box-shadow: 0 20px 45px rgba(0,0,0,0.15); }
+        .product-img { height: 260px; background-size: cover; background-position: center; }
+        .product-info { padding: 1.8rem; }
+        .product-info h3 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+        .product-info p { color: #555; font-size: 0.95rem; }
+        .img-hero { background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070'); }
+        .img-vegetables { background-image: url('https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=2070'); }
+        .img-fertilizer { background-image: url('https://images.unsplash.com/photo-1592483648228-b35146a4330c?q=80&w=2070'); }
+        .img-compost { background-image: url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=2070'); }
+        .img-farm { background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070'); }
+        .img-sprayer { background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=2070'); }
+        .img-seeds { background-image: url('https://images.unsplash.com/photo-1518635017498-87f514b751ba?q=80&w=2070'); }
+        .img-spices { background-image: url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2070'); }
+        .img-flower { background-image: url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=2070'); }
+        .img-green { background-image: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070'); }
+        .stats { background: linear-gradient(rgba(30, 70, 32, 0.95), rgba(30, 70, 32, 0.95)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80'); background-size: cover; padding: 4rem 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; text-align: center; color: var(--cream); }
+        .stat-item h3 { font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 0.5rem; }
+        .location { background: var(--primary-green); color: var(--cream); padding: 5rem 5%; text-align: center; }
+        .location h2 { color: var(--cream); font-size: 2.5rem; margin-bottom: 2rem; }
+        .location-address { font-size: 1.15rem; line-height: 2.2; margin-bottom: 1.5rem; }
+        .contact-btn { display: inline-block; padding: 18px 45px; background: var(--accent-gold); color: var(--white); text-decoration: none; font-weight: bold; font-size: 1.1rem; border-radius: 50px; margin: 1rem 0.5rem; transition: 0.3s; }
+        .contact-btn:hover { background: var(--cream); color: var(--primary-green); transform: scale(1.05); }
+        .directions-btn { display: inline-block; padding: 18px 45px; border: 2px solid var(--cream); color: var(--cream); text-decoration: none; font-weight: bold; font-size: 1rem; border-radius: 50px; margin: 1rem 0.5rem; transition: 0.3s; }
+        .directions-btn:hover { background: var(--cream); color: var(--primary-green); }
+        .whatsapp-btn { display: inline-block; padding: 18px 45px; background: #25D366; color: var(--white); text-decoration: none; font-weight: bold; font-size: 1.1rem; border-radius: 50px; margin: 1rem 0.5rem; transition: 0.3s; }
+        .whatsapp-btn:hover { background: #128C7E; transform: scale(1.05); }
+        footer { background: #152816; color: #7a8a7a; padding: 3rem 5%; text-align: center; }
+        .footer-logo { font-family: var(--font-heading); font-size: 1.5rem; color: var(--cream); margin-bottom: 1rem; }
+        @media (max-width: 768px) { .hero-content h1 { font-size: 2.3rem; } nav { display: none; } .products-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🌿 Dhandai Agro Service</div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Grow Better with Dhandai Agro</h1>
+            <p>Your trusted partner for premium quality seeds, organic fertilizers, pesticides and farming solutions. Serving farmers across Arvi, Borkund & Maharashtra with love since 2010.</p>
+            <a href="#products" class="btn">Explore Products</a>
+        </div>
+    </section>
+
+    <section class="about-banner" id="about">
+        <h2>About Dhandai Agro Service</h2>
+        <p>At Dhandai Agro Service, we understand the hard work and dedication that goes into farming. That's why we are committed to providing the best quality agricultural products to help our farmers succeed.</p>
+        <p>Visit us today and experience the difference quality makes!</p>
+    </section>
+
+    <section class="stats">
+        <div class="stat-item"><h3>15+</h3><p>Years Experience</p></div>
+        <div class="stat-item"><h3>5000+</h3><p>Happy Farmers</p></div>
+        <div class="stat-item"><h3>50+</h3><p>Products</p></div>
+        <div class="stat-item"><h3>100%</h3><p>Quality Assured</p></div>
+    </section>
+
+    <section class="section" id="products">
+        <span class="section-subtitle">Our Products</span>
+        <h2 class="section-title">Quality Agricultural Products</h2>
+        <div class="products-grid">
+            <div class="product-card"><div class="product-img img-vegetables"></div><div class="product-info"><h3>🥬 Vegetable Seeds</h3><p>Fresh seeds for Tomatoes, Chilies, Brinjal, Okra, Cabbage, Onion, Spinach and more.</p></div></div>
+            <div class="product-card"><div class="product-img img-fertilizer"></div><div class="product-info"><h3>🧱 Chemical Fertilizers</h3><p>Urea, DAP, MOP, NPK complexes for all crop requirements.</p></div></div>
+            <div class="product-card"><div class="product-img img-compost"></div><div class="product-info"><h3>🌱 Organic Fertilizers</h3><p>Vermin compost, Farm yard manure, Neem cake for natural farming.</p></div></div>
+            <div class="product-card"><div class="product-img img-farm"></div><div class="product-info"><h3>🐛 Pesticides</h3><p>Effective insecticides, fungicides and herbicides for crop protection.</p></div></div>
+            <div class="product-card"><div class="product-img img-sprayer"></div><div class="product-info"><h3>🚜 Farming Tools</h3><p>Sprayers, pumps, hedge cutters and essential hand tools.</p></div></div>
+            <div class="product-card"><div class="product-img img-seeds"></div><div class="product-info"><h3>🌱 All Purpose Seeds</h3><p>Seeds for pulses, grams and kitchen garden requirements.</p></div></div>
+            <div class="product-card"><div class="product-img img-spices"></div><div class="product-info"><h3>🌶️ Spices Seeds</h3><p>Coriander, Cumin, Fenugreek, Turmeric and other spice seeds.</p></div></div>
+            <div class="product-card"><div class="product-img img-flower"></div><div class="product-info"><h3>🌻 Flower Seeds</h3><p>Marigold, Sunflower, Rose and decorative flower seeds.</p></div></div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="location" id="contact">
+        <h2>📍 Contact Us</h2>
+        <div class="location-address">
+            <strong>Dhandai Agro Service</strong><br>
+            Parola Road, Near Shirud,<br>
+            Chaufuli, Arvi, Borkund,<br>
+            Maharashtra 424311
+        </div>
+        <p>📞 <strong>+91 77750 99419</strong></p>
+        <p>🕐 Open: Monday - Saturday | 9:00 AM - 7:00 PM</p>
+        
+        <div style="margin-top: 2rem;">
+            <a href="tel:7775099419" class="contact-btn">📞 Call Now</a>
+            <a href="https://wa.me/919403427657" class="whatsapp-btn">💬 WhatsApp</a>
+        </div>
+        <div>
+            <a href="https://www.google.com/maps/search/?q=Parola+Road+Near+Shirud+Chaufuli+Arvi+Borkund+Maharashtra+424311" target="_blank" class="directions-btn">🧭 Get Directions</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">🌿 Dhandai Agro Service</div>
+        <p>&copy; 2024 Dhandai Agro Service. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
