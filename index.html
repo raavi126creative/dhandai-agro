@@ -139,6 +139,52 @@
         <div class="footer-logo">🌿 Dhandai Agro Service</div>
         <p>&copy; 2024 Dhandai Agro Service. All Rights Reserved.</p>
     </footer>
+<!-- ================= CHATBOT SYSTEM ================= -->
+<!-- 1. The Floating Chat Button -->
+<div id="agro-chat-btn" style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #2e7d32; color: white; rounded-radius: 50%; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0px 4px 10px rgba(0,0,0,0.3); z-index: 9999;">
+    💬
+</div>
 
+<!-- 2. The Chat Window Box -->
+<div id="agro-chat-window" style="position: fixed; bottom: 90px; right: 20px; width: 320px; height: 400px; background-color: white; border-radius: 10px; box-shadow: 0px 5px 15px rgba(0,0,0,0.2); display: none; flex-direction: column; font-family: sans-serif; overflow: hidden; z-index: 9999; border: 1px solid #ccc;">
+    <!-- Header -->
+    <div style="background-color: #2e7d32; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+        <span>🌾 Agro-AI Assistant</span>
+        <span id="close-chat" style="cursor: pointer; font-size: 20px;">&times;</span>
+    </div>
+    <!-- Messages Area -->
+    <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; background-color: #f9f9f9; font-size: 14px; line-height: 1.4;">
+        <div style="background-color: #e8f5e9; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; color: #1b5e20;">
+            Hello! Ask me anything about seeds, fertilizers, or farming solutions.
+        </div>
+    </div>
+    <!-- Input Bar -->
+    <div style="display: flex; border-top: 1px solid #eee; padding: 10px; background-color: white;">
+        <input type="text" id="chat-input" placeholder="Type a farming question..." style="flex: 1; border: 1px solid #ccc; border-radius: 4px; padding: 8px; outline: none; font-size: 14px;">
+        <button id="send-chat-btn" style="background-color: #2e7d32; color: white; border: none; padding: 8px 12px; margin-left: 5px; border-radius: 4px; cursor: pointer; font-weight: bold;">Send</button>
+    </div>
+</div>
+
+<!-- 3. The JavaScript Interface Logic -->
+<script>
+    const chatBtn = document.getElementById('agro-chat-btn');
+    const chatWindow = document.getElementById('agro-chat-window');
+    const closeChat = document.getElementById('close-chat');
+
+    // Toggle the chat box window open and closed
+    chatBtn.addEventListener('click', () => {
+        if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+            chatWindow.style.display = 'flex';
+        } else {
+            chatWindow.style.display = 'none';
+        }
+    });
+
+    closeChat.addEventListener('click', () => {
+        chatWindow.style.display = 'none';
+    });
+</script>
+<!-- ================================================== -->
+    
 </body>
 </html>
