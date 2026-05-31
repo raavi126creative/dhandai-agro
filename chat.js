@@ -36,25 +36,31 @@ function sendChatMessage() {
     let reply = "";
     const lowerQuery = query.toLowerCase();
 
-    if (lowerQuery.includes('hi') || lowerQuery.includes('hello') || lowerQuery.includes('नमस्कार') || lowerQuery.includes('राम राम')) {
-        reply = "राम राम! Dhandai Agro Service AI Assistant मधे आपले स्वागत आहे. How can I help you protect your crops or boost your yield today? (आपण मराठी किंवा English मध्ये विचारू शकता!)";
-    } 
-    else if (lowerQuery.includes('cotton') || lowerQuery.includes('कपाशी') || lowerQuery.includes('कापूस')) {
+    // Checks for Cotton
+    if (lowerQuery.includes('cotton') || lowerQuery.includes('कपाशी') || lowerQuery.includes('कापूस')) {
         reply = "कपाशी पिकासाठी (Cotton Crop): We highly recommend premium BG-II Bt seeds. To protect against pink bollworm (बोंडअळी), ensure timely application of neem-based pesticides and balanced NPK dosing. Visit Dhandai Agro for the best local protective solutions!";
     } 
+    // Checks for Soybean
     else if (lowerQuery.includes('soybean') || lowerQuery.includes('soyabean') || lowerQuery.includes('सोयाबीन')) {
         reply = "सोयाबीन पिकासाठी (Soybean Crop): Ensure deep sowing and seed treatment (बीजप्रक्रिया) using Rhizobium culture for excellent root development. Don't forget to apply Sulphur (खत) during land preparation to increase oil content and grain weight!";
     } 
-    else if (lowerQuery.includes('fertilizer') || lowerQuery.includes('खत') || lowerQuery.includes('खते') || lowerQuery.includes('khad')) {
+    // Checks for Fertilizers (using 'fertiliz' to catch singular and plural)
+    else if (lowerQuery.includes('fertiliz') || lowerQuery.includes('खत') || lowerQuery.includes('खते') || lowerQuery.includes('khad')) {
         reply = "We stock top-quality fertilizers: Urea, DAP (18:46:0), MOP, and premium Organic Compost (सेंद्रिय खत). For Arvi and Borkund soil profiles, a balanced micro-nutrient spray during the vegetative stage will increase your yield by 20%!";
     } 
+    // Checks for Pests/Medicines
     else if (lowerQuery.includes('pest') || lowerQuery.includes('किड') || lowerQuery.includes('औषध') || lowerQuery.includes('pesticide')) {
         reply = "Crop protection is our specialty! Dhandai Agro Service offers targeted systemic insecticides and eco-friendly fungicides to control whitefly, aphids, and fungal blasts. Bring a leaf sample to our store for a free diagnosis!";
     }
+    // Checks for Address/Locations
     else if (lowerQuery.includes('where') || lowerQuery.includes('shop') || lowerQuery.includes('पत्ता') || lowerQuery.includes('address') || lowerQuery.includes('arvi') || lowerQuery.includes('borkund')) {
         reply = "Dhandai Agro Service is located to serve you best! Our main branches are in Arvi and Borkund. We are open from 9:00 AM to 8:00 PM to provide seeds, fertilizers, and expert advice directly to our farming family.";
     }
-    // Advanced Fallback Guide if no keywords match
+    // Checks for Hello / Greetings
+    else if (lowerQuery.includes('hi') || lowerQuery.includes('hello') || lowerQuery.includes('नमस्कार') || lowerQuery.includes('राम राम')) {
+        reply = "राम राम! Dhandai Agro Service AI Assistant मधे आपले स्वागत आहे. How can I help you protect your crops or boost your yield today? (आपण मराठी किंवा English मध्ये विचारू शकता!)";
+    } 
+    // Fallback Guide
     else {
         reply = `I might need more details to answer that perfectly! Try asking me about these topics:<br><br>
         🌱 <b>Cotton</b> (कापूस)<br>
@@ -77,4 +83,5 @@ function sendChatMessage() {
         messagesContainer.insertAdjacentHTML('beforeend', aiMessageHtml);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }, 600);
-            }
+}
+    
