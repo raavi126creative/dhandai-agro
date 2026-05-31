@@ -5,84 +5,48 @@ document.getElementById('chat-input').addEventListener('keypress', function (e) 
     }
 });
 
-async function sendChatMessage() {
+function sendChatMessage() {
     const inputEl = document.getElementById('chat-input');
     const messagesContainer = document.getElementById('chat-messages');
     const query = inputEl.value.trim();
 
     if (!query) return;
 
-    // 1. Display user's question in the chat box
+    // 1. Display user's question
     const userMessageHtml = `
-        <div style="background-color: #e0e0e0; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; margin-left: auto; text-align: right; color: #333;">
+        <div style="background-color: #e0e0e0; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; margin-left: auto; text-align: right; color: #333; font-family: sans-serif;">
             ${query}
         </div>
     `;
     messagesContainer.insertAdjacentHTML('beforeend', userMessageHtml);
-    inputEl.value = ''; // Clear input field
-    messagesContainer.scrollTop = messagesContainer.scrollHeight; // Scroll to bottom
-
-    // 2. Add a temporary "Typing..." placeholder for the AI response
-    const loadingId = 'loading-' + Date.now();
-    const loadingHtml = `
-        <div id="${loadingId}" style="background-color: #e8f5e9; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; color: #1b5e20; font-style: italic;">
-            Typing...
-        </div>
-    `;
-    messagesContainer.insertAdjacentHTML('beforeend', loadingHtml);
+    inputEl.value = ''; 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    try {
-        // Breaking a brand new key into pieces so GitHub scanners never see it whole
-        const a = "sk-or-";
-        const b = "v1-5e839e557b6";
-        const c = "10499b7b958c281df69b82";
-        const d = "1a1ef4c29df62ca83b7ea13fc3bc13a0";
-        
-        const key = a + b + c + d;
+    // 2. Local Agro Intelligent Matrix (Keyword Matching System)
+    let reply = "Thank you for reaching out to Dhandai Agro Service! For detailed product availability and pricing at our Arvi or Borkund branches, please contact us directly or visit our main outlet.";
+    const lowerQuery = query.toLowerCase();
 
-        // 3. Connect to the free AI text API interface
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + key
-            },
-            body: JSON.stringify({
-                model: 'google/gemini-2.5-flash:free',
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are an expert agronomist advisor for "Dhandai Agro Service", serving farmers across Arvi, Borkund, and Maharashtra. Keep answers brief (2-3 sentences max), professional, and highly encouraging. You help with seeds, organic fertilizers, pesticides, and crops like cotton or soybean. Answer in English, Marathi, or Hindi based on what the user types.'
-                    },
-                    { role: 'user', content: query }
-                ]
-            })
-        });
+    // Marathi and English Smart Keyword Responses
+    if (lowerQuery.includes('cotton') || lowerQuery.includes('कपाशी') || lowerQuery.includes('कापूस')) {
+        reply = "For the upcoming cotton season, we highly recommend premium BG-II Bt Cotton seeds. Pair them with balanced NPK fertilizers and organic neem cake soil solutions available at Dhandai Agro for maximum yield!";
+    } else if (lowerQuery.includes('soybean') || lowerQuery.includes('सोयाबीन')) {
+        reply = "Soybean crops thrive with early root development. We recommend using specialized liquid bio-fertilizers (Rhizobium) and premium sulphur treatments available at our shop to boost oil content.";
+    } else if (lowerQuery.includes('fertilizer') || lowerQuery.includes('खत') || lowerQuery.includes('खते')) {
+        reply = "Dhandai Agro Service stocks premium organic compost, single super phosphate (SSP), and advanced water-soluble fertilizers. Visit us to get a customized fertilizer card for your soil type!";
+    } else if (lowerQuery.includes('hi') || lowerQuery.includes('hello') || lowerQuery.includes('नमस्कार')) {
+        reply = "Namaskar! Welcome to Dhandai Agro Service's AI Assistant. How can I help you optimize your crop yield today?";
+    } else if (lowerQuery.includes('where') || lowerQuery.includes('shop') || lowerQuery.includes('पत्ता') || lowerQuery.includes('address')) {
+        reply = "Dhandai Agro Service proudly serves farmers across Arvi, Borkund, and Akola regions. Please check our Contact section below for exact maps and phone numbers!";
+    }
 
-        const data = await response.json();
-        const aiResponse = data.choices[0].message.content;
-
-        // 4. Remove loading placeholder and display actual AI response
-        document.getElementById(loadingId).remove();
+    // 3. Simulate a quick 400ms professional typing delay
+    setTimeout(() => {
         const aiMessageHtml = `
-            <div style="background-color: #e8f5e9; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; color: #1b5e20;">
-                ${aiResponse}
+            <div style="background-color: #e8f5e9; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; color: #1b5e20; font-family: sans-serif;">
+                ${reply}
             </div>
         `;
         messagesContainer.insertAdjacentHTML('beforeend', aiMessageHtml);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-    } catch (error) {
-        console.error(error);
-        if (document.getElementById(loadingId)) {
-            document.getElementById(loadingId).remove();
-        }
-        messagesContainer.insertAdjacentHTML('beforeend', `
-            <div style="background-color: #ffebee; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; color: #c62828;">
-                Sorry, I am having trouble connecting right now. Please try again!
-            </div>
-        `);
-    }
+    }, 400);
 }
-
