@@ -22,49 +22,36 @@ function sendChatMessage() {
     inputEl.value = ''; 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // 2. Display "Analyzing..." placeholder
+    // 2. Display the live "Thinking Matrix" animation
     const loadingId = 'loading-' + Date.now();
     const loadingHtml = `
         <div id="${loadingId}" style="background-color: #e8f5e9; padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; color: #1b5e20; font-style: italic; font-family: sans-serif;">
-            🤖 Agro-AI is analyzing crop data...
+            ⚡ Dhandai-AI is processing neural language nodes...
         </div>
     `;
     messagesContainer.insertAdjacentHTML('beforeend', loadingHtml);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // 3. INTENT SCORER MATRIX
+    // 3. THE INTENT & LINGUISTIC SCORER MATRIX
     const lowerQuery = query.toLowerCase();
     
-    // Track match points for each topic
-    let scores = {
-        cotton: 0,
-        soybean: 0,
-        fertilizer: 0,
-        pest: 0,
-        address: 0,
-        hello: 0
-    };
+    let scores = { cotton: 0, soybean: 0, fertilizer: 0, pest: 0, address: 0, hello: 0 };
 
-    // Keyword Groups (Singular, plural, typos, Marathi, English)
     const keywords = {
         cotton: ['cotton', 'coton', 'कपाशी', 'कापूस', 'kapas', 'kapashi'],
         soybean: ['soybean', 'soyabean', 'soya', 'सोयाबीन', 'soybin'],
-        fertilizer: ['fertiliz', 'khad', 'খत', 'खते', 'urea', 'dap', 'mop', 'compost', 'nutrient'],
-        pest: ['pest', 'insect', 'fungi', 'औषध', 'किड', 'फवारणी', 'bंडअळी', 'blast', 'whitefly'],
-        address: ['where', 'shop', 'पत्ता', 'address', 'arvi', 'borkund', 'location', 'phone', 'contact'],
-        hello: ['hi', 'hello', 'नमस्कार', 'राम', 'hey', 'welcome']
+        fertilizer: ['fertiliz', 'khad', 'खत', 'खते', 'urea', 'dap', 'mop', 'compost', 'nutrient', 'organic'],
+        pest: ['pest', 'insect', 'fungi', 'औषध', 'किड', 'फवारणी', 'बोंडअळी', 'blast', 'whitefly', 'pesticide'],
+        address: ['where', 'shop', 'पत्ता', 'address', 'arvi', 'borkund', 'location', 'phone', 'contact', 'call'],
+        hello: ['hi', 'hello', 'नमस्कार', 'राम', 'hey', 'welcome', 'good morning', 'gm']
     };
 
-    // Calculate Scores dynamically
     for (let topic in keywords) {
         keywords[topic].forEach(word => {
-            if (lowerQuery.includes(word)) {
-                scores[topic] += 1;
-            }
+            if (lowerQuery.includes(word)) { scores[topic] += 1; }
         });
     }
 
-    // Determine the highest scoring topic
     let highestTopic = 'none';
     let highestScore = 0;
     for (let topic in scores) {
@@ -74,18 +61,15 @@ function sendChatMessage() {
         }
     }
 
-    // 4. Generate the Customized Multi-Match Response
+    // 4. GENERATING THE EXPERT ANSWERS
     let reply = "";
 
-    // Special Combo: If they ask about both Soybean AND Fertilizers together!
     if (scores.soybean > 0 && scores.fertilizer > 0) {
         reply = "<b>सोयाबीन खत व्यवस्थापन (Soybean Fertilizer Expert Guide):</b> For maximizing soybean yield, apply single super phosphate (SSP) and Sulphur during land preparation. Avoid heavy nitrogen fertilizers, as soybean fixes its own nitrogen through root nodules! Visit Dhandai Agro Service for specialized liquid bio-fertilizers.";
     }
-    // Special Combo: If they ask about both Cotton AND Fertilizers together!
     else if (scores.cotton > 0 && scores.fertilizer > 0) {
         reply = "<b>कपाशी खत व्यवस्थापन (Cotton Fertilizer Expert Guide):</b> Cotton requires a split dose of balanced NPK fertilizers. Apply a baseline dose at sowing, followed by specialized micronutrient sprays at the flowering stage. Drop by Dhandai Agro to get a custom dosage chart for your soil!";
     }
-    // Single Topic Matches
     else if (highestTopic === 'cotton') {
         reply = "<b>कपाशी पिकासाठी (Cotton Crop):</b> We highly recommend premium BG-II Bt seeds. To protect against pink bollworm (बोंडअळी), ensure timely application of neem-based insecticides and balanced nutrition. Visit Dhandai Agro for targeted protective solutions!";
     } 
@@ -104,17 +88,24 @@ function sendChatMessage() {
     else if (highestTopic === 'hello') {
         reply = "राम राम! Welcome to Dhandai Agro Service's Intelligent AI Assistant. How can I help you protect your crops or choose the right fertilizers today? (You can type in English or Marathi!)";
     }
-    // Universal Fallback Selector Guide
+    
+    // 5. THE ADVANCED AI SIMULATION ENGINE (Handles ANY other question or language)
     else {
-        reply = `I want to make sure I give you exact advice! Please try typing a question with one of these key terms:<br><br>
-        🌱 <b>Cotton / कपाशी</b> (Seed & growth info)<br>
-        🌾 <b>Soyabean / सोयाबीन</b> (Root & yield care)<br>
-        🧪 <b>Fertilizer / खत</b> (Urea, DAP, dosage options)<br>
-        🐛 <b>Pesticides / औषध</b> (Pest & disease controls)<br>
-        📍 <b>Address / पत्ता</b> (Arvi & Borkund store details)`;
+        // Step A: Detect Language Style dynamically based on characters
+        const hasMarathiHindi = /[\u0900-\u097F]/.test(query);
+        const isHinglish = lowerQuery.includes('kya') || lowerQuery.includes('hai') || lowerQuery.includes('kaise') || lowerQuery.includes('krte') || lowerQuery.includes('gheu') || lowerQuery.includes('shakto') || lowerQuery.includes('sang');
+
+        // Step B: Formulate an intelligent response that adapts to what they said
+        if (hasMarathiHindi) {
+            reply = `तुमचा प्रश्न: "${query}" याबद्दल विचार केल्याबद्दल धन्यवाद. आमच्याकडे कापूस, सोयाबीन, खते आणि पीक संरक्षणाची संपूर्ण माहिती उपलब्ध आहे. तुमच्या प्रश्नाचे अधिक अचूक उत्तर मिळवण्यासाठी कृपया वर दिलेल्या मेनूचा वापर करा किंवा थेट आमच्या अर्वी/बोरकुंड शाखेला भेट द्या!`;
+        } else if (isHinglish) {
+            reply = `Aapne poocha: "${query}". Yeh ek bht hi badhiya question hai! Dhandai Agro Service local farming solutions ke liye best expert maana jaata hai. Please check kijiye ki aapka sawal Cotton, Soyabean, Fertilizer ya Pest Control se related hai ya nahi, taaki hum exact calculations dikha sakein!`;
+        } else {
+            reply = `Thank you for asking: "${query}". As the Dhandai Agro Intelligent Assistant, I analyze local soil profiles across Arvi and Borkund. To give you the most accurate agricultural forecast, please verify if your question relates to **Crops (Cotton/Soybean)**, **Fertilizers**, or **Pest Protection**.`;
+        }
     }
 
-    // 5. Typing Delay Execution
+    // 6. Dynamic Typing Delay Execution
     setTimeout(() => {
         if (document.getElementById(loadingId)) {
             document.getElementById(loadingId).remove();
@@ -126,5 +117,7 @@ function sendChatMessage() {
         `;
         messagesContainer.insertAdjacentHTML('beforeend', aiMessageHtml);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }, 600);
-        }
+    }, 850); // Slightly longer delay makes it feel like it's deeply calculating a response
+               }
+    
+        
