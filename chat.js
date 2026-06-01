@@ -32,45 +32,89 @@ function sendChatMessage() {
     messagesContainer.insertAdjacentHTML('beforeend', loadingHtml);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // 3. Smart Matching Logic
-    let reply = "";
+    // 3. INTENT SCORER MATRIX
     const lowerQuery = query.toLowerCase();
+    
+    // Track match points for each topic
+    let scores = {
+        cotton: 0,
+        soybean: 0,
+        fertilizer: 0,
+        pest: 0,
+        address: 0,
+        hello: 0
+    };
 
-    // Checks for Cotton
-    if (lowerQuery.includes('cotton') || lowerQuery.includes('कपाशी') || lowerQuery.includes('कापूस')) {
-        reply = "कपाशी पिकासाठी (Cotton Crop): We highly recommend premium BG-II Bt seeds. To protect against pink bollworm (बोंडअळी), ensure timely application of neem-based pesticides and balanced NPK dosing. Visit Dhandai Agro for the best local protective solutions!";
-    } 
-    // Checks for Soybean
-    else if (lowerQuery.includes('soybean') || lowerQuery.includes('soyabean') || lowerQuery.includes('सोयाबीन')) {
-        reply = "सोयाबीन पिकासाठी (Soybean Crop): Ensure deep sowing and seed treatment (बीजप्रक्रिया) using Rhizobium culture for excellent root development. Don't forget to apply Sulphur (खत) during land preparation to increase oil content and grain weight!";
-    } 
-    // Checks for Fertilizers (using 'fertiliz' to catch singular and plural)
-    else if (lowerQuery.includes('fertiliz') || lowerQuery.includes('खत') || lowerQuery.includes('खते') || lowerQuery.includes('khad')) {
-        reply = "We stock top-quality fertilizers: Urea, DAP (18:46:0), MOP, and premium Organic Compost (सेंद्रिय खत). For Arvi and Borkund soil profiles, a balanced micro-nutrient spray during the vegetative stage will increase your yield by 20%!";
-    } 
-    // Checks for Pests/Medicines
-    else if (lowerQuery.includes('pest') || lowerQuery.includes('किड') || lowerQuery.includes('औषध') || lowerQuery.includes('pesticide')) {
-        reply = "Crop protection is our specialty! Dhandai Agro Service offers targeted systemic insecticides and eco-friendly fungicides to control whitefly, aphids, and fungal blasts. Bring a leaf sample to our store for a free diagnosis!";
+    // Keyword Groups (Singular, plural, typos, Marathi, English)
+    const keywords = {
+        cotton: ['cotton', 'coton', 'कपाशी', 'कापूस', 'kapas', 'kapashi'],
+        soybean: ['soybean', 'soyabean', 'soya', 'सोयाबीन', 'soybin'],
+        fertilizer: ['fertiliz', 'khad', 'খत', 'खते', 'urea', 'dap', 'mop', 'compost', 'nutrient'],
+        pest: ['pest', 'insect', 'fungi', 'औषध', 'किड', 'फवारणी', 'bंडअळी', 'blast', 'whitefly'],
+        address: ['where', 'shop', 'पत्ता', 'address', 'arvi', 'borkund', 'location', 'phone', 'contact'],
+        hello: ['hi', 'hello', 'नमस्कार', 'राम', 'hey', 'welcome']
+    };
+
+    // Calculate Scores dynamically
+    for (let topic in keywords) {
+        keywords[topic].forEach(word => {
+            if (lowerQuery.includes(word)) {
+                scores[topic] += 1;
+            }
+        });
     }
-    // Checks for Address/Locations
-    else if (lowerQuery.includes('where') || lowerQuery.includes('shop') || lowerQuery.includes('पत्ता') || lowerQuery.includes('address') || lowerQuery.includes('arvi') || lowerQuery.includes('borkund')) {
-        reply = "Dhandai Agro Service is located to serve you best! Our main branches are in Arvi and Borkund. We are open from 9:00 AM to 8:00 PM to provide seeds, fertilizers, and expert advice directly to our farming family.";
+
+    // Determine the highest scoring topic
+    let highestTopic = 'none';
+    let highestScore = 0;
+    for (let topic in scores) {
+        if (scores[topic] > highestScore) {
+            highestScore = scores[topic];
+            highestTopic = topic;
+        }
     }
-    // Checks for Hello / Greetings
-    else if (lowerQuery.includes('hi') || lowerQuery.includes('hello') || lowerQuery.includes('नमस्कार') || lowerQuery.includes('राम राम')) {
-        reply = "राम राम! Dhandai Agro Service AI Assistant मधे आपले स्वागत आहे. How can I help you protect your crops or boost your yield today? (आपण मराठी किंवा English मध्ये विचारू शकता!)";
+
+    // 4. Generate the Customized Multi-Match Response
+    let reply = "";
+
+    // Special Combo: If they ask about both Soybean AND Fertilizers together!
+    if (scores.soybean > 0 && scores.fertilizer > 0) {
+        reply = "<b>सोयाबीन खत व्यवस्थापन (Soybean Fertilizer Expert Guide):</b> For maximizing soybean yield, apply single super phosphate (SSP) and Sulphur during land preparation. Avoid heavy nitrogen fertilizers, as soybean fixes its own nitrogen through root nodules! Visit Dhandai Agro Service for specialized liquid bio-fertilizers.";
+    }
+    // Special Combo: If they ask about both Cotton AND Fertilizers together!
+    else if (scores.cotton > 0 && scores.fertilizer > 0) {
+        reply = "<b>कपाशी खत व्यवस्थापन (Cotton Fertilizer Expert Guide):</b> Cotton requires a split dose of balanced NPK fertilizers. Apply a baseline dose at sowing, followed by specialized micronutrient sprays at the flowering stage. Drop by Dhandai Agro to get a custom dosage chart for your soil!";
+    }
+    // Single Topic Matches
+    else if (highestTopic === 'cotton') {
+        reply = "<b>कपाशी पिकासाठी (Cotton Crop):</b> We highly recommend premium BG-II Bt seeds. To protect against pink bollworm (बोंडअळी), ensure timely application of neem-based insecticides and balanced nutrition. Visit Dhandai Agro for targeted protective solutions!";
     } 
-    // Fallback Guide
+    else if (highestTopic === 'soybean') {
+        reply = "<b>सोयाबीन पिकासाठी (Soybean Crop):</b> Ensure deep sowing and proper seed treatment (बीजप्रक्रिया) using Rhizobium culture for superior root development. This ensures bold grains and a higher weight profile at harvest!";
+    } 
+    else if (highestTopic === 'fertilizer') {
+        reply = "<b>Dhandai Agro Fertilizer Inventory:</b> We stock authentic Urea, DAP, MOP, SSP, and organic composts. For local Arvi and Borkund soil profiles, balancing macronutrients with water-soluble sprays is key to a 20% yield jump.";
+    } 
+    else if (highestTopic === 'pest') {
+        reply = "<b>पीक संरक्षण (Crop Protection):</b> We provide top-grade systemic insecticides and fungicides to fully control whitefly, aphids, and rust. Bring a leaf sample directly to Dhandai Agro Service for an expert diagnosis!";
+    }
+    else if (highestTopic === 'address') {
+        reply = "<b>Dhandai Agro Service Locations:</b> Our main outlets are located in <b>Arvi</b> and <b>Borkund</b>, fully operational from 9:00 AM to 8:00 PM. Check our contact page below for phone numbers and directions!";
+    }
+    else if (highestTopic === 'hello') {
+        reply = "राम राम! Welcome to Dhandai Agro Service's Intelligent AI Assistant. How can I help you protect your crops or choose the right fertilizers today? (You can type in English or Marathi!)";
+    }
+    // Universal Fallback Selector Guide
     else {
-        reply = `I might need more details to answer that perfectly! Try asking me about these topics:<br><br>
-        🌱 <b>Cotton</b> (कापूस)<br>
-        🌾 <b>Soyabean</b> (सोयाबीन)<br>
-        🧪 <b>Fertilizers</b> (खत)<br>
-        🐛 <b>Pesticides</b> (औषध)<br>
-        📍 <b>Address</b> (पत्ता)`;
+        reply = `I want to make sure I give you exact advice! Please try typing a question with one of these key terms:<br><br>
+        🌱 <b>Cotton / कपाशी</b> (Seed & growth info)<br>
+        🌾 <b>Soyabean / सोयाबीन</b> (Root & yield care)<br>
+        🧪 <b>Fertilizer / खत</b> (Urea, DAP, dosage options)<br>
+        🐛 <b>Pesticides / औषध</b> (Pest & disease controls)<br>
+        📍 <b>Address / पत्ता</b> (Arvi & Borkund store details)`;
     }
 
-    // 4. Typing Delay Execution
+    // 5. Typing Delay Execution
     setTimeout(() => {
         if (document.getElementById(loadingId)) {
             document.getElementById(loadingId).remove();
@@ -83,5 +127,4 @@ function sendChatMessage() {
         messagesContainer.insertAdjacentHTML('beforeend', aiMessageHtml);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }, 600);
-}
-    
+        }
