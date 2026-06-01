@@ -26,7 +26,7 @@ class ChatRequest(BaseModel):
 async def chat_with_ai(request: ChatRequest):
     try:
         # Using the fast and powerful Gemini 1.5 Flash model
-        model = genai.GenerativeModel('gemini-1.5-flash')
+         model = genai.GenerativeModel('gemini-pro')
         
         # Guardrail system instructions so the AI behaves like an expert for your business
         system_instruction = (
