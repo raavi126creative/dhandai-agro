@@ -25,11 +25,12 @@ class ChatRequest(BaseModel):
 @app.post("/api/chat")
 async def chat_with_ai(request: ChatRequest):
     try:
-        # Using the fast and powerful Gemini 1.5 Flash model
-         model = genai.GenerativeModel('gemini-pro')
+    # Using the fast and powerful Gemini 1.5 Flash model
+    model = genai.GenerativeModel('gemini-pro')
+
+    # Guardrail system instructions so the AI behaves like an expert for your business
+    system_instruction = (
         
-        # Guardrail system instructions so the AI behaves like an expert for your business
-        system_instruction = (
             "You are Dhandai-AI, the expert virtual assistant for Dhandai Agro Service located in Arvi and Borkund. "
             "Your job is to answer the user's question accurately, politely, and professionally. "
             "You have complete knowledge of all farming crops (like Cotton, Soybean, Maize, Sugarcane, etc.), "
